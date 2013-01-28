@@ -1,0 +1,11 @@
+﻿@model KnockoutSignalR.Models.CurrencyViewModel.Currency
+
+<tr>
+    <td>
+        @Html.HiddenFor(m => m.Code)
+        @Html.DisplayFor(m => m.Code)
+    </td>
+    <td>
+        @Html.TextBoxFor(m => m.Price)
+    </td>
+</tr>

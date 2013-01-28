@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Current Exchange Rates</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th></th>
+            <th>USD</th>
+            <th>EUR</th>
+            <th>GBP</th>
+            <th>INR</th>
+            <th>AUD</th>
+            <th>CAD</th>
+            <th>ZAR</th>
+            <th>NZD</th>
+            <th>JPY</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>USD</th>
+            <!-- ko foreach: currencies -->
+            <td data-bind="text: price"></td>
+            <!-- /ko -->
+        </tr>
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            var currencyModel = function (currencies) {
+                this.currencies = ko.mapping.fromJS(currencies);
+
+                this.updateCurrency = function (code, price) {
+                    var currency = ko.utils.arrayFirst(this.currencies(), function (currency) {
+                        return currency.code() == code;
+                    });
+
+                    currency.price(price);
+                };
+            };
+                       
+            var hub = $.connection.currencyHub;
+           
+            $.connection.hub.start().done(function () {
+                hub.server.getCurrencies();
+            });
+            
+            hub.client.updateCurrency = function (code, price) {
+                updateCurrency(code, price);
+            };
+
+            hub.client.setCurrencies = function(currentCurrencies) {
+                ko.applyBindings(currencyModel(currentCurrencies));
+            };
+        });
+    </script>
+}

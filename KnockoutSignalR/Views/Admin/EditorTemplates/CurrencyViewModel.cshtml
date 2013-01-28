@@ -1,0 +1,17 @@
+﻿@model  KnockoutSignalR.Models.CurrencyViewModel
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Price
+            </th>
+        </tr>
+    </thead>
+    <tbody>     
+        @Html.EditorFor(m => m.Currencies)
+    </tbody>
+</table>
